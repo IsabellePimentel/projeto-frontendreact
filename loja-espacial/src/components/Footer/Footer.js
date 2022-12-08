@@ -6,6 +6,7 @@ function Footer() {
     return (
     <MainFooter>
       <p>Desenvolvido por Isabelle Pimentel</p>
+      <p>Estudante Labenu</p>
       <div>
       <a href="https://github.com/IsabellePimentel" target="_blank"><img src={github} alt="icone-github"/></a>
       <a href="https://www.linkedin.com/in/isabellecpimentel/" target="_blank"><img src={linkedin} alt="icone-linkedin"/></a>

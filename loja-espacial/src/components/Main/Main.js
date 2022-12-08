@@ -1,9 +1,9 @@
 import Filtro from "./Filtro"
-import { useState } from 'react'
-import { Container, Card, BoxCard } from "./MainStyle"
+import { useState, useEffect } from 'react'
+import { Container, Card, BoxCard, TODO } from "./MainStyle"
+import Carrinho from "./Carrinho"
 
-
-function Main() {
+function Main(props) {
 
     const produtos = [{
         id: 1,
@@ -52,6 +52,8 @@ function Main() {
     const [valorMinimo, setValorMinimo] = useState("")
     const [valorMaximo, setValorMaximo] = useState("")
     const [ordem, setOrdem] = useState("Maior")
+    const [carrinho, setCarrinho] = useState([])
+    const [cesta, setCesta] = useState([])
 
     const onChangeOrdem = (event) => {
         setOrdem(event.target.value)
@@ -78,7 +80,33 @@ function Main() {
             }
         })
 
+
+    const onChangeCarrinho = (event) => {
+        setCarrinho(event.target.value)
+    }
+
+    
+    const compraProduto = (produto) => {
+
+        console.log(produto)
+        const novoCarrinho = [...carrinho]
+        const produtoAdicionado = produto
+        const produtoExistente = novoCarrinho.find((produto) => {
+            return produto.id === produtoAdicionado.id
+        })
+        if (produtoExistente) {
+            produtoExistente.quantidade++
+            produtoExistente.precototal = produtoExistente.quantidade * produtoExistente.preco
+        } else {
+            novoCarrinho.push({ ...produtoAdicionado, quantidade: 1, precototal: produtoAdicionado.preco })
+        }
+        setCarrinho(novoCarrinho)
+        console.log(carrinho)
+    }
+
+
     return (
+
         <>
             <Filtro setPesquisa={setPesquisa}
                 setMinimo={setValorMinimo}
@@ -98,23 +126,36 @@ function Main() {
 
 
                 <BoxCard>
-                    {produtosList.map((produto) => {
+                    {produtosList.map((produto, index) => {
                         return (
-                            <Card>
+                            <Card key={index}>
                                 <div>
                                     <img src={produto.imagem} />
                                 </div>
                                 <div>
                                     <h3>{produto.nome}</h3><br />
                                     <h4>R$ {produto.preco.toFixed(2)}</h4>
+                                    <button onClick={() => compraProduto(produto)} onChange={onChangeCarrinho}>Comprar</button>
                                 </div>
                             </Card>
                         )
                     })}
                 </BoxCard>
 
+
+
             </Container>
+
+
+            <Carrinho
+                cesta={carrinho}
+                setCesta={setCesta}
+                setCarrinho={setCarrinho}
+
+            />
+
         </>
+
     );
 
 }

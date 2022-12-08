@@ -6,7 +6,7 @@ import header from "../../img/header.png"
 function Header() {
     return (
       <MainHeader>
-    <div className="titulo">
+        <div className="titulo">
     <div>
       <img src={header} alt="icone-header"/>
       </div>
