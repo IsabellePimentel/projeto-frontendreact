@@ -1,6 +1,6 @@
 import Filtro from "./Filtro"
 import { useState, useEffect } from 'react'
-import { Container, Card, BoxCard, TODO } from "./MainStyle"
+import { Container, Card, BoxCard } from "./MainStyle"
 import Carrinho from "./Carrinho"
 
 function Main(props) {
@@ -48,19 +48,19 @@ function Main(props) {
         imagem: "https://images.unsplash.com/photo-1601597893939-708e7ee0716b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
     }]
 
-    const [pesquisa, setPesquisa] = useState("")
+    const [nome, setNome] = useState("")
     const [valorMinimo, setValorMinimo] = useState("")
     const [valorMaximo, setValorMaximo] = useState("")
     const [ordem, setOrdem] = useState("Maior")
     const [carrinho, setCarrinho] = useState([])
-    const [cesta, setCesta] = useState([])
+    const [itens, setItens] = useState([])
 
     const onChangeOrdem = (event) => {
         setOrdem(event.target.value)
     }
 
     const produtosList = produtos
-        .filter((produto) => produto.nome.toUpperCase().includes(pesquisa.toUpperCase()))
+        .filter((produto) => produto.nome.toUpperCase().includes(nome.toUpperCase()))
         .filter((produto) => { return valorMinimo ? produto.preco >= valorMinimo : produto })
         .filter((produto) => { return valorMaximo ? produto.preco <= valorMaximo : produto })
         .sort((a, b) => {
@@ -85,7 +85,7 @@ function Main(props) {
         setCarrinho(event.target.value)
     }
 
-    
+
     const compraProduto = (produto) => {
 
         console.log(produto)
@@ -105,10 +105,23 @@ function Main(props) {
     }
 
 
-    return (
+    useEffect(() => {
+        if (carrinho.length > 0) {
+            const listaStringCarrinho = JSON.stringify(carrinho)
+            localStorage.setItem("carrinho", listaStringCarrinho)
+        }
+    }, [carrinho])
 
+    useEffect(() => {
+        const novoCarrinho = JSON.parse(localStorage.getItem("carrinho"))
+        if (novoCarrinho !== null) {
+            setCarrinho(novoCarrinho)
+        }
+    }, [])
+
+    return (
         <>
-            <Filtro setPesquisa={setPesquisa}
+            <Filtro setNome={setNome}
                 setMinimo={setValorMinimo}
                 setMaximo={setValorMaximo}
             />
@@ -124,7 +137,6 @@ function Main(props) {
                     </div>
                 </div>
 
-
                 <BoxCard>
                     {produtosList.map((produto, index) => {
                         return (
@@ -133,25 +145,24 @@ function Main(props) {
                                     <img src={produto.imagem} />
                                 </div>
                                 <div>
-                                    <h3>{produto.nome}</h3><br />
-                                    <h4>R$ {produto.preco.toFixed(2)}</h4>
+                                    <h2>
+                                        {produto.nome}  
+                                    </h2>
+                                    <br />
+                                    <h3 class="shadow">
+                                        {produto.preco.toLocaleString('pt-BR', { style: "currency", currency: 'BRL' })}
+                                    </h3>
                                     <button onClick={() => compraProduto(produto)} onChange={onChangeCarrinho}>Comprar</button>
                                 </div>
                             </Card>
                         )
                     })}
                 </BoxCard>
-
-
-
             </Container>
 
-
             <Carrinho
-                cesta={carrinho}
-                setCesta={setCesta}
-                setCarrinho={setCarrinho}
-
+                itens={carrinho}
+                setItens={setItens}
             />
 
         </>

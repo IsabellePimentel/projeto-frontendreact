@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const Container = styled.div`
-width: 75vw;
+width: 70vw;
 height: 70vh;
 display: flex;
 float: left;
@@ -18,11 +18,13 @@ float: left;
 display: flex;
 flex-direction: column;
 width: 10vw;
+gap: 0.5vw;
+padding-left: 1vw;
 height: 75vh;
 `
 
 export const Card = styled.div`
-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+box-shadow: 0 4px 8px 0 white;
     transition: 0.3s;
     border-radius: 20px;
     border: 1px solid;
@@ -53,7 +55,7 @@ box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     }
     
     :hover{
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px 0 white;
     }
 `
 export const BoxCard = styled.div`
@@ -65,7 +67,7 @@ justify-content: center;
 gap: 1vw;
 flex-wrap: wrap;
 `
-export const LateralCarrinho = styled.div`
+export const SideBarCarrinho = styled.div`
 display: flex;
 width: 10vw;
 height: 75vh;
